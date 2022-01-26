@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <algorithm>
+#include <list>
 #define SQR(x) x*x
 #define CUBE(X) (SQR(X)*(X))
 #define ABS(X) (((X) < 0)? -(X) : X)
@@ -181,8 +182,82 @@ void Question22()
     ShowArray(arr, SIZE);
 }
 
+long int Fact(long int N)
+{
+    // если произведена попытка вычислить
+    // факториал нуля
+    if (N < 1) return 0;
+    /* если вычисляется факториал единицы
+    именно здесь производится выход из рекурсии
+    */
+    else if (N == 1) return 1;
+    // любое другое число вызывает функцию заново
+// с формулой N-1
+    else return N * Fact(N - 1);
+}
+
+template <class T>
+void quickSortR(T a[], long N, int start, int finish) {
+    T summ = 0;
+    for (size_t i = 0; i < N; i++)
+    {
+        summ += a[i];
+    }
+    int value = summ / N;
+    int minIndex = 0, maxIndex = 0;
+    list<T> less;
+    list<T> more;
+    for (size_t i = 0; i < N; i++)
+    {
+        if (a[i] >= value)
+        {
+            more.push_back(a[i]);
+            maxIndex++;
+        }
+        else
+        {
+            less.push_back(a[i]);
+            minIndex++;
+        }
+    }
+    T* lessArray = new T[less.size()];
+    T* moreArray = new T[more.size()];
+    if (less.size() > 1)
+    {
+        for (size_t i = 0; i < less.size(); i++)
+        {
+            auto l_front = less.begin();
+            std::advance(l_front, i);
+            lessArray[i] = *l_front;
+        }
+        quickSortR(lessArray, minIndex, 0, minIndex);
+    }
+    if (more.size() > 1)
+    {
+        for (size_t i = 0; i < less.size(); i++)
+        {
+            auto l_front = more.begin();
+            std::advance(l_front, i);
+            moreArray[i] = *l_front;
+        }
+        quickSortR(moreArray, maxIndex, 0, maxIndex);
+    }   
+    for (size_t i = 0; i < minIndex; i++)
+    {
+        a[i] = lessArray[i];
+    }
+    for (size_t i = minIndex; i < N; i++)
+    {
+        a[i] = moreArray[i - minIndex];
+    }
+    
+}
+
+
 int main()
 {
     setlocale(0, "ru");
-    Question22();
+    int arr[10]{ 8,3,2,9,8,2,3,5,9,8 };
+    quickSortR(arr, 10, 0, 10);
+    ShowArray(arr, 10);
 }
