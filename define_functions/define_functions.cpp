@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <algorithm>
 #include <list>
+#include<cstdarg>
 #define SQR(x) x*x
 #define CUBE(X) (SQR(X)*(X))
 #define ABS(X) (((X) < 0)? -(X) : X)
@@ -32,7 +33,7 @@ void ShowArray(int arr[], const int SIZE) {
 /// <param name="max"></param>
 /// <param name="min"></param>
 template <typename T>
-void InitArray(T mass[], int lenght, int max, int min) {
+void InitArray(T* mass, int lenght, int max, int min) {
     srand(time(0));
     for (int i = 0; i < lenght; i++) {
         mass[i] = ((rand() % (max - min + 1)) + min);
@@ -254,10 +255,122 @@ void quickSortR(T a[], long N, int start, int finish) {
 }
 
 
+/*
+ Для указания того, что функция принимает
+ неограниченное количество параметров нужно
+ указать ...
+ У нашей функции один известный параметр это
+ numOfArgs. Этот параметр содержит число,
+ переданных переменных параметров
+*/
+int _GetMin(int numOfArgs, ...) {
+    int minVal;
+    va_list va;
+    // инициализируем va для прохода по списку параметров
+    // numOfArgs - самый правый известный параметр
+    va_start(va, numOfArgs);
+    // получаем первое значение из списка
+    minVal = va_arg(va, int);
+    int tempVal = 0;
+    /*
+ Мы получили уже первое значение из списка.
+ Именно поэтому мы ведем цикл до numOfArgs - 1
+ */
+    for (int i = 0; i < numOfArgs - 1; i++) {
+        // В цикле получаем одно значение за другим
+        tempVal = va_arg(va, int);
+        if (minVal > tempVal)
+            minVal = tempVal;
+    }
+    // корректное завершение работы с переменными списка
+    va_end(va);
+    return minVal;
+}
+
+int GetMin(int n, ...) {
+    int minVal = *((&n)+1);
+
+    // получаем указатель на параметр n
+    for (int* ptr = (&n)+1; (n-1) > 0; n--)
+    {
+        if (*(ptr) < minVal)
+        {
+            minVal = *ptr;
+        }
+        ++ptr;
+    }
+    return minVal;
+}
+
+void Add(int& a)
+{
+    a++;
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="arr"></param>
+/// <param name="length"></param>
+/// <param name="min"></param>
+/// <param name="max"></param>
+/// <returns></returns>
+bool SearchMinAndMax(int* arr, int length, int& min, int& max)
+{
+    int tempMin = min, tempMax = max;
+    min = arr[0];
+    max = arr[0];
+    for (size_t i = 1; i < length; i++)
+    {
+        if (arr[i] > max)
+        {
+            max = arr[i];
+        }
+        if (arr[i] < min)
+        {
+            min = arr[i];
+        }
+    }
+    return min < tempMin || max > tempMax;
+}
+
+void RefernceAdd(int* a)
+{
+    (*a)++;
+}
+
+void GetSummAndMuliply(int* arr, int SIZE, int* summ, long* mult)
+{
+    *summ = arr[0];
+    *mult = arr[0];
+    for (size_t i = 1; i < SIZE; i++)
+    {
+        *summ += arr[i];
+        *mult *= arr[i];
+    }
+}
+
+void GetCountNegativPositivAndZero(int* arr, int SIZE, int* negtive, int* positive, int* zero)
+{
+    for (size_t i = 0; i < SIZE; i++)
+    {
+        if (arr[i] == 0) zero[0]++;
+        else if (arr[i] > 0) positive[0]++;
+        else negtive[0]++;
+    }
+}
+
 int main()
 {
     setlocale(0, "ru");
-    int arr[10]{ 8,3,2,9,8,2,3,5,9,8 };
-    quickSortR(arr, 10, 0, 10);
-    ShowArray(arr, 10);
+    int size = 10, summ = 0, negative = 0, positive = 0, zero = 0;
+    long mult = 1;
+    int* arr = new int[size]{ 0 };
+    InitArray(arr, size, 9, -9);
+    ShowArray(arr, size);
+    GetSummAndMuliply(arr, size, &summ, &mult);
+    cout << "Сумма = " << summ << " Произведение = " << mult << endl;
+    GetCountNegativPositivAndZero(arr, size, &negative, &positive, &zero);
+    cout << "Положительных: " << positive << " Отрицательных: " << negative << " Нулевых: " << zero;
+    return 0;
 }
