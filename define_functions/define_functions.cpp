@@ -360,17 +360,82 @@ void GetCountNegativPositivAndZero(int* arr, int SIZE, int* negtive, int* positi
     }
 }
 
-int main()
+bool SerachPodmojestvo(int* arr1, int SIZE1, int* arr2, int SIZE2, int** index)
 {
-    setlocale(0, "ru");
-    int size = 10, summ = 0, negative = 0, positive = 0, zero = 0;
+    for (size_t i = 0; i < (SIZE1 - SIZE2)+1; i++)
+    {
+        if (arr1[i] == arr2[0])
+        {
+            bool secondInFirst = true;
+            for (size_t j = 1; j < SIZE2; j++)
+            {
+                if (arr1[j+i] != arr2[j])
+                {
+                    secondInFirst = false;
+                    break;
+                }
+            }
+            if (secondInFirst)
+            {
+                *index = &arr1[i];
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Quetion1_14()
+{
+    int size = 10, summ = 0;
     long mult = 1;
-    int* arr = new int[size]{ 0 };
+    int* arr = new int[size] { 0 };
     InitArray(arr, size, 9, -9);
     ShowArray(arr, size);
     GetSummAndMuliply(arr, size, &summ, &mult);
     cout << "Сумма = " << summ << " Произведение = " << mult << endl;
+}
+
+void Quetion2_14()
+{
+    int size = 10, negative = 0, positive = 0, zero = 0;
+    int* arr = new int[size] { 0 };
+    InitArray(arr, size, 9, -9);
+    ShowArray(arr, size);
     GetCountNegativPositivAndZero(arr, size, &negative, &positive, &zero);
     cout << "Положительных: " << positive << " Отрицательных: " << negative << " Нулевых: " << zero;
+}
+
+void Quetion3_14()
+{
+    int* arr1 = new int[] { 1, 2, 3, 4, 5, 6, 7, 8};
+    int* arr2 = new int[] { 5, 6, 7, 8};
+    int* index = NULL;
+    if (SerachPodmojestvo(arr1, 8, arr2, 4, &index))
+    {
+        cout << index << endl;
+    }
+    else
+    {
+        cout << "Подмоножество не найдено" << endl;
+    }
+    InitArray(arr1, 8, 2, 1);
+    ShowArray(arr1, 8);
+    InitArray(arr2, 4, 3, 2);
+    ShowArray(arr2, 4);
+    if (SerachPodmojestvo(arr1, 8, arr2, 4, &index))
+    {
+        cout << index << endl;
+    }
+    else
+    {
+        cout << "Подмоножество не найдено" << endl;
+    }
+}
+
+int main()
+{
+    setlocale(0, "ru");
+    Quetion3_14();
     return 0;
 }
