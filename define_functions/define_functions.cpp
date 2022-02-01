@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <algorithm>
 #include <list>
-#include<cstdarg>
+#include <cstdarg>
 #define SQR(x) x*x
 #define CUBE(X) (SQR(X)*(X))
 #define ABS(X) (((X) < 0)? -(X) : X)
@@ -9,6 +9,8 @@
 using namespace std;
 
 constexpr int NOTFOUND = -1;;
+#pragma region Standart Array functions
+
 
 /// <summary>
 /// Вывод массива на экран
@@ -34,7 +36,7 @@ void ShowArray(int arr[], const int SIZE) {
 /// <param name="min"></param>
 template <typename T>
 void InitArray(T* mass, int lenght, int max, int min) {
-    srand(time(0));
+    //srand(time(nullptr));
     for (int i = 0; i < lenght; i++) {
         mass[i] = ((rand() % (max - min + 1)) + min);
     }
@@ -51,6 +53,12 @@ void InitArray(T* mass, int lenght, int max, int min) {
 /// <param name="finish">конечная позиция</param>
 template <typename T>
 void BubbleSort(T arr[], int length, bool reverse, int start, int finish);
+
+
+#pragma endregion
+
+#pragma region До указателей
+
 
 /// <summary>
 /// Сортирует половину массива по убванию, а вторую половину по возрастанию
@@ -73,13 +81,13 @@ void SortHalf(T arr[], int lenght);
 template <typename T>
 void BubbleSort(T arr[], int length, bool reverse = false, int start = 0, int finish = 0)
 {
-    int finishSort = finish ? finish : length ;
+    int finishSort = finish ? finish : length;
 
-    for (size_t i = start; i < finishSort -1; i++)
+    for (size_t i = start; i < finishSort - 1; i++)
     {
         T temp = arr[i];
         int position = i;
-        for (size_t j = i+1; j < finishSort; j++)
+        for (size_t j = i + 1; j < finishSort; j++)
         {
             bool comparer = reverse ? temp < arr[j] : temp > arr[j];
             if (comparer)
@@ -89,7 +97,7 @@ void BubbleSort(T arr[], int length, bool reverse = false, int start = 0, int fi
             }
         }
         arr[position] = arr[i];
-        arr[i] = temp;        
+        arr[i] = temp;
     }
 }
 
@@ -150,7 +158,7 @@ void ReplaceZero(int arr[], int lenght)
     {
         arr[j] = -1;
         j++;
-    }        
+    }
 }
 
 /// <summary>
@@ -170,7 +178,7 @@ void SortFromFirstNegativeToLastNegative(T arr[], int lenght)
     {
         cout << "Не найдено первого или последнего отрицательного эелемента" << endl;
     }
-    BubbleSort(arr, lenght, false, first, last+1);
+    BubbleSort(arr, lenght, false, first, last + 1);
 }
 
 void Question22()
@@ -242,7 +250,7 @@ void quickSortR(T a[], long N, int start, int finish) {
             moreArray[i] = *l_front;
         }
         quickSortR(moreArray, maxIndex, 0, maxIndex);
-    }   
+    }
     for (size_t i = 0; i < minIndex; i++)
     {
         a[i] = lessArray[i];
@@ -251,9 +259,13 @@ void quickSortR(T a[], long N, int start, int finish) {
     {
         a[i] = moreArray[i - minIndex];
     }
-    
+
 }
 
+
+#pragma endregion
+
+#pragma region Указатели начало
 
 /*
  Для указания того, что функция принимает
@@ -288,10 +300,10 @@ int _GetMin(int numOfArgs, ...) {
 }
 
 int GetMin(int n, ...) {
-    int minVal = *((&n)+1);
+    int minVal = *((&n) + 1);
 
     // получаем указатель на параметр n
-    for (int* ptr = (&n)+1; (n-1) > 0; n--)
+    for (int* ptr = (&n) + 1; (n - 1) > 0; n--)
     {
         if (*(ptr) < minVal)
         {
@@ -362,14 +374,14 @@ void GetCountNegativPositivAndZero(int* arr, int SIZE, int* negtive, int* positi
 
 bool SerachPodmojestvo(int* arr1, int SIZE1, int* arr2, int SIZE2, int** index)
 {
-    for (size_t i = 0; i < (SIZE1 - SIZE2)+1; i++)
+    for (size_t i = 0; i < (SIZE1 - SIZE2) + 1; i++)
     {
         if (arr1[i] == arr2[0])
         {
             bool secondInFirst = true;
             for (size_t j = 1; j < SIZE2; j++)
             {
-                if (arr1[j+i] != arr2[j])
+                if (arr1[j + i] != arr2[j])
                 {
                     secondInFirst = false;
                     break;
@@ -384,6 +396,11 @@ bool SerachPodmojestvo(int* arr1, int SIZE1, int* arr2, int SIZE2, int** index)
     }
     return false;
 }
+
+
+#pragma endregion
+
+#pragma region FP_14_1
 
 //Задание 1. Написать функцию, которая получает указатель на массив и его размер,
 //и возвращает сумму и произведение его элементов в двух параметрах - указателях.
@@ -444,9 +461,174 @@ void Quetion3_14()
     }
 }
 
+#pragma endregion
+
+#pragma region Задачи указатели (Владимир)
+
+#pragma region Task11
+
+void Copy(int* from, int* to, int length)
+{
+    for (size_t i = 0; i < length; i++)
+    {
+        to[i] = from[i];
+    }
+}
+
+void PushBack(int** arr, int& size, int value)
+{
+    int* temp = *arr;
+    size++;
+    *arr = new int[size] {0};
+    Copy(temp, *arr, size - 1);
+    (*arr)[size - 1] = value;
+    delete[] temp;
+}
+
+void Indexes11()
+{
+    int input = 0;
+    int size = 1;
+    int* arr = new int[size] {0};
+    cin >> input;
+    arr[0] = input;
+    ShowArray(arr, size);
+    cin >> input;
+    while (input > 0)
+    {
+        PushBack(&arr, size, input);
+        ShowArray(arr, size);
+        cin >> input;
+    }
+    ShowArray(arr, size);
+    delete[] arr;
+}
+
+#pragma endregion
+
+#pragma region Task12
+
+int** ConvertTo2DArray(int* arr, int size, int rows, int columns)
+{
+    if (size != rows * columns)
+        return nullptr;
+
+    int** arr2d = new int* [rows];
+
+    for (size_t i = 0; i < rows; i++)
+        arr2d[i] = new int[columns];
+
+    int k = 0;
+    for (size_t i = 0; i < rows; i++)
+    {
+        for (size_t j = 0; j < columns; j++)
+        {
+            arr2d[i][j] = arr[k++];
+        }
+    }
+    return arr2d;
+}
+
+void Indexes12()
+{
+    int size = 12;
+    int* arr = new int[size] {0};
+    InitArray(arr, size, 9, 1);
+    ShowArray(arr, size);
+    int** arr2d = ConvertTo2DArray(arr, size, 2, 5);
+    if (arr2d != nullptr)
+    {
+        //cout << arr2d[0][0] << endl;
+        //cout << arr2d[0][4] << endl;
+        //cout << arr2d[1][0] << endl;
+        //cout << arr2d[1][4] << endl;
+        cout << "Конвертация завершена" << endl;
+    }
+    else
+    {
+        cout << "Конвертация не возможна" << endl;
+    }
+    
+}
+
+#pragma endregion
+
+#pragma region Task13
+
+void AddRowTo2dArr(int*** arr, int *rows, int columns, bool inStart = false)
+{
+    int** temp = (*arr);
+    (*rows)++;
+    (*arr) = new int*[(*rows)];
+
+    int start = inStart ? 1 : 0;
+    int finish = inStart ? (*rows) : (*rows) - 1;
+
+    if (inStart)
+        (*arr)[0] = new int[columns] {0};
+
+    for (size_t i = start; i < finish; i++)
+    {
+        
+        (*arr)[i] = temp[i-inStart];
+    }
+
+    delete[] temp;
+    if (!inStart)
+        (*arr)[(*rows) - 1] = new int[columns]{0};
+}
+
+void Indexes13()
+{
+    int rows = 3, columns = 10;
+    int** arr2d = new int* [3]{ nullptr };
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        arr2d[i] = new int[columns];
+        InitArray(arr2d[i], columns, 9, 1);
+        ShowArray(arr2d[i], columns);
+    }
+
+    AddRowTo2dArr(&arr2d, &rows, columns);
+    ShowArray(arr2d[rows-1], columns);
+}
+
+#pragma endregion
+
+#pragma region Task14
+
+void Indexes14()
+{
+    int rows = 3, columns = 10;
+    int** arr2d = new int* [3]{ nullptr };
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        arr2d[i] = new int[columns];
+        InitArray(arr2d[i], columns, 9, 1);
+        ShowArray(arr2d[i], columns);
+    }
+
+    AddRowTo2dArr(&arr2d, &rows, columns, true);
+
+    cout << "\n\n";
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        ShowArray(arr2d[i], columns);
+    }
+
+}
+
+#pragma endregion
+
+#pragma endregion
+
 int main()
 {
+    srand(time(nullptr));
     setlocale(0, "ru");
-    Quetion3_14();
+    Indexes14();
     return 0;
 }
