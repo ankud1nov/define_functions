@@ -465,6 +465,53 @@ void Quetion3_14()
 
 #pragma region Задачи указатели (Владимир)
 
+#pragma region Task1
+
+int* Max(int* a, int* b)
+{
+    if ((*a) > (*b))
+        return a;
+    else
+        return b;
+    //return ((*a) > (*b) ? a : b );
+}
+
+void Indexes1()
+{
+    int a = 5;
+    int b = 10;
+    int* max = Max(&a, &b);
+    cout << *max;
+}
+
+#pragma endregion
+
+#pragma region Task2
+
+void ShowZnak(int* a)
+{
+    if (a > 0)
+    {
+        cout << "+";
+    }
+    else if (a == 0)
+    {
+        cout << "Отсутствует";
+    }
+    else
+    {
+        cout << "-";
+    }
+}
+
+void Indexes2()
+{
+    int a;
+    cin >> a;
+}
+
+#pragma endregion
+
 #pragma region Task11
 
 void Copy(int* from, int* to, int length)
@@ -629,6 +676,6 @@ int main()
 {
     srand(time(nullptr));
     setlocale(0, "ru");
-    Indexes14();
+    Indexes2();
     return 0;
 }
