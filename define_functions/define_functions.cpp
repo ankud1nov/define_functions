@@ -42,6 +42,16 @@ void InitArray(T* mass, int lenght, int max, int min) {
     }
 }
 
+//template <typename T>
+void Init2DArray(int** mass, int row, int columns, int max, int min)
+{
+    for (int i = 0; i < 10; i++)
+    {
+        mass[i] = new int[columns];
+        InitArray(mass[i], columns, max, min);
+    }
+}
+
 /// <summary>
 /// Сортирует массив
 /// </summary>
@@ -538,6 +548,10 @@ void Indexes11()
     int size = 1;
     int* arr = new int[size] {0};
     cin >> input;
+
+    if (input < 0)
+        return;
+
     arr[0] = input;
     ShowArray(arr, size);
     cin >> input;
@@ -676,6 +690,8 @@ int main()
 {
     srand(time(nullptr));
     setlocale(0, "ru");
-    Indexes2();
+    int rows = 10, int columns = 15;
+    int** arr2d = new int* [rows];
+    Init2DArray(arr2d, rows, columns, 9, 1);
     return 0;
 }
