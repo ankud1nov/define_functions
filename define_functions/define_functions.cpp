@@ -689,41 +689,104 @@ void Indexes14()
 #pragma endregion
 
 #pragma string 
-void Task1()
+
+string InitStr()
 {
     string str{};
     getline(cin, str);
+    return str;
+}
+
+string InitStrWithMsg(string message)
+{
+    cout << message;
+    string str{};
+    getline(cin, str);
+    return str;
+}
+
+void Task1()
+{
+    string str = InitStr();
     cout << str.length();
+}
+
+string AddToString(string str, int length)
+{
+    if (str.length() < length)
+    {
+        str.append((length - str.length()) - 1, ' ');
+    }
+    str.push_back('*');
+    return str;
 }
 
 void Task2()
 {
-    string str1 = "Лабораторная работа № 1";
-    string str2 = "Выполнил(а): ст. гр. ";
-    string str3{};
+    string str1 = "* Лабораторная работа № 1";
+    string str2 = "* Выполнил(а): ст. гр. ";
+    string str3 = "* ";
     string name{};
     string surname{};
     string thirdname{};
     string gr{};
     int lenght = 0;
-    cout << "Введите фамилию: ";
-    getline(cin, surname);
-    cout << "Введите Имя: ";
-    getline(cin, name);
-    cout << "Введите отчество: ";
-    getline(cin, thirdname);
-    cout << "Введите группу: ";
-    getline(cin, gr);
+    surname = InitStrWithMsg("Введите фамилию : ");
+    name = InitStrWithMsg("Введите Имя : ");
+    thirdname =InitStrWithMsg("Введите отчество : ");
+    gr = InitStrWithMsg("Введите группу : ");
     str2 += (" " + gr);
-    str3 = surname + " " + name + " " + thirdname;
-    lenght = str3.length() >= str2.length() ? str3.length() : str2.length();
-    const size_t count = lenght + 2;
-    string ramka ((size_t)(lenght + 2), '*');
+    str3 += (surname + " " + name + " " + thirdname);
+    lenght = (str3.length() >= str2.length() ? str3.length() : str2.length()) + 2;
+    string ramka (lenght, '*');
+
+    str1 = AddToString(str1, lenght);
+    str2 = AddToString(str2, lenght);
+    str3 = AddToString(str3, lenght);
+
     cout << ramka << endl;
-    cout << '*' << str1 << endl;
-    cout << '*' << str2 << endl;
-    cout << '*' << str3 << endl;
+    cout << str1 << endl;
+    cout << str2 << endl;
+    cout << str3 << endl;
     cout << ramka << endl;
+}
+
+void Task3()
+{
+    string str{};
+    int number = 0;
+    getline(cin, str);
+    cin >> number;
+    if (number > str.length())
+        cout << "Введенный номер больше кол-ва символов";
+    else
+        cout << str[number - 1];    
+}
+
+void Task4()
+{
+    string str = InitStr();
+    replace(str.begin(), str.end(), ' ', '\t');
+    cout << str;
+}
+
+void Task5()
+{
+    string str = InitStrWithMsg("Введите строку\n");
+    int digit = 0, sym = 0, other = 0;
+    for (auto symbol : str)
+    {
+        if (symbol >= '0' && symbol <= '9') digit++;
+        else if ((symbol >= 'a' && symbol <= 'z')
+            || (symbol >= 'A' && symbol <= 'Z')
+            || (symbol >= 'А' && symbol <= 'Я')
+            || (symbol >= 'а' && symbol <= 'я')) sym++;
+        else other++;
+
+    }
+    cout << "Символов: " << sym << endl;
+    cout << "Цифр: " << digit << endl;
+    cout << "Другое: " << other << endl;
 }
 
 #pragma endregion
@@ -733,6 +796,6 @@ int main()
     //setlocale(0, "ru");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    Task2();
+    Task5();
     return 0;
 }
