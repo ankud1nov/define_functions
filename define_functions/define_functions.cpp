@@ -44,6 +44,16 @@ void InitArray(T* mass, int lenght, int max, int min) {
     }
 }
 
+//template <typename T>
+void Init2DArray(int** mass, int row, int columns, int max, int min)
+{
+    for (int i = 0; i < 10; i++)
+    {
+        mass[i] = new int[columns];
+        InitArray(mass[i], columns, max, min);
+    }
+}
+
 /// <summary>
 /// Сортирует массив
 /// </summary>
@@ -467,6 +477,53 @@ void Quetion3_14()
 
 #pragma region Задачи указатели (Владимир)
 
+#pragma region Task1
+
+int* Max(int* a, int* b)
+{
+    if ((*a) > (*b))
+        return a;
+    else
+        return b;
+    //return ((*a) > (*b) ? a : b );
+}
+
+void Indexes1()
+{
+    int a = 5;
+    int b = 10;
+    int* max = Max(&a, &b);
+    cout << *max;
+}
+
+#pragma endregion
+
+#pragma region Task2
+
+void ShowZnak(int* a)
+{
+    if (a > 0)
+    {
+        cout << "+";
+    }
+    else if (a == 0)
+    {
+        cout << "Отсутствует";
+    }
+    else
+    {
+        cout << "-";
+    }
+}
+
+void Indexes2()
+{
+    int a;
+    cin >> a;
+}
+
+#pragma endregion
+
 #pragma region Task11
 
 void Copy(int* from, int* to, int length)
@@ -493,6 +550,10 @@ void Indexes11()
     int size = 1;
     int* arr = new int[size] {0};
     cin >> input;
+
+    if (input < 0)
+        return;
+
     arr[0] = input;
     ShowArray(arr, size);
     cin >> input;
