@@ -1,7 +1,9 @@
 ﻿#include <iostream>
+#include <string>
 #include <algorithm>
 #include <list>
 #include <cstdarg>
+#include <windows.h>
 #define SQR(x) x*x
 #define CUBE(X) (SQR(X)*(X))
 #define ABS(X) (((X) < 0)? -(X) : X)
@@ -625,10 +627,51 @@ void Indexes14()
 
 #pragma endregion
 
+#pragma string 
+void Task1()
+{
+    string str{};
+    getline(cin, str);
+    cout << str.length();
+}
+
+void Task2()
+{
+    string str1 = "Лабораторная работа № 1";
+    string str2 = "Выполнил(а): ст. гр. ";
+    string str3{};
+    string name{};
+    string surname{};
+    string thirdname{};
+    string gr{};
+    int lenght = 0;
+    cout << "Введите фамилию: ";
+    getline(cin, surname);
+    cout << "Введите Имя: ";
+    getline(cin, name);
+    cout << "Введите отчество: ";
+    getline(cin, thirdname);
+    cout << "Введите группу: ";
+    getline(cin, gr);
+    str2 += (" " + gr);
+    str3 = surname + " " + name + " " + thirdname;
+    lenght = str3.length() >= str2.length() ? str3.length() : str2.length();
+    const size_t count = lenght + 2;
+    string ramka ((size_t)(lenght + 2), '*');
+    cout << ramka << endl;
+    cout << '*' << str1 << endl;
+    cout << '*' << str2 << endl;
+    cout << '*' << str3 << endl;
+    cout << ramka << endl;
+}
+
+#pragma endregion
 int main()
 {
     srand(time(nullptr));
-    setlocale(0, "ru");
-    Indexes14();
+    //setlocale(0, "ru");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    Task2();
     return 0;
 }
