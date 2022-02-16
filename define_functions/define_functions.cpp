@@ -789,6 +789,80 @@ void Task5()
     cout << "Другое: " << other << endl;
 }
 
+void Task6()
+{
+    string str = InitStrWithMsg("Введите строку\n");
+    for (int i = 0; i < str.length(); i++)
+    {
+        if (!((str[i] >= 'a' && str[i] <= 'z')
+            || (str[i] >= 'A' && str[i] <= 'Z')
+            || (str[i] >= 'А' && str[i] <= 'Я')
+            || (str[i] >= 'а' && str[i] <= 'я')
+            || (str[i] >= '0' && str[i] <= '9')))
+        {
+            str.erase(i, 1);
+            i--;
+        }
+    }
+    cout << str;
+}
+
+void Task7()
+{
+    string str = InitStrWithMsg("Введите строку\n");
+    string copy = str;
+    reverse(str.begin(), str.end());
+    if (str == copy)
+    {
+        cout << "Полиндром";
+    }
+    else
+    {
+        cout << "Не Полиндром";
+    }
+}
+
+bool IsIsecreamSandwich(string str)
+{
+    string sandwich{};
+    char sandwichChar = str[0];
+    char isecreamChar{};
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        if (str[i] != sandwichChar)
+        {
+            isecreamChar = str[i];
+            sandwich = str.substr(0, i);
+            for (size_t j = i; j < str.length(); j++)
+            {
+                if (str[j] != isecreamChar)
+                {
+                    string sandwich2 = str.substr(j, (str.length() - 1));
+                    return (sandwich2 == sandwich ? true : false) ;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    return false;
+}
+
+void Task8()
+{
+    string str = InitStrWithMsg("Введите строку\n");
+    bool is = IsIsecreamSandwich(str);
+    if (is)
+    {
+        cout << "true";
+    }
+    else
+    {
+        cout << "false";
+    }
+}
+
 #pragma endregion
 int main()
 {
@@ -796,6 +870,13 @@ int main()
     //setlocale(0, "ru");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    Task5();
+    while (true)
+    {
+        Task8();
+        Sleep(5000);
+        system("cls");
+    }
+    
+    //cin.clear();
     return 0;
 }
