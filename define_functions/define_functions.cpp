@@ -703,9 +703,7 @@ string InitStr()
 string InitStrWithMsg(string message)
 {
     cout << message;
-    string str{};
-    getline(cin, str);
-    return str;
+    return InitStr();
 }
 
 void Task1()
@@ -896,17 +894,38 @@ void Task9()
     cout << GetMaxLenghtInStrArray(surnames, 5);
 }
 
-void Task10()
+int CountSybolsInStr(string str, char symbol)
 {
-    string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef";
-    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; }))+1;
+    return (count_if(str.begin(), str.end(), [&](char c) {return c == symbol; }));
+}
+
+string* SplitStr(string str, char symbol)
+{
+    int spaceCount = CountSybolsInStr(str, ' ') + 1;
     string* strs = new string[spaceCount];
+
+    //Заполение массива слова разделенными пробелами
     int position = 0;
     for (size_t i = 0; i < spaceCount; i++)
     {
-        strs[i] = str.substr(position, str.find_first_of(' ', position)-position);
-        position = (str.find(' ', position)) + 1;
+        strs[i] = str.substr(position, str.find_first_of(symbol, position) - position);
+        position = (str.find(symbol, position)) + 1;
     }
+    return strs;
+}
+
+void Task10()
+{
+    //Строка
+    string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef";
+
+    //Поиск пробелов в строке и их подсчет (+1) с помощью функции count_if
+    int spaceCount = CountSybolsInStr(str, ' ') + 1;
+    
+    //Создание массива строк нужной длинны
+    string* strs = SplitStr(str, ' ');
+
+    //Вывод массива на экран
     ShowArray(strs, spaceCount, '\n');
     int numberInArr = int();
     int maxLen = GetMaxLenghtInStrArray(strs, spaceCount, numberInArr);
@@ -916,14 +935,11 @@ void Task10()
 void Task11()
 {
     string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef";
-    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; })) + 1;
-    string* strs = new string[spaceCount];
-    int position = 0;
-    for (size_t i = 0; i < spaceCount; i++)
-    {
-        strs[i] = str.substr(position, str.find_first_of(' ', position) - position);
-        position = (str.find(' ', position)) + 1;
-    }
+
+    int spaceCount = CountSybolsInStr(str, ' ') + 1;
+
+    string* strs = SplitStr(str, ' ');
+
     ShowArray(strs, spaceCount, '\n');
     int numberInArr = 0;
     int mixLen = strs[0].length();
@@ -983,7 +999,7 @@ int main()
 
     while (true)
     {
-        Task13();        
+        Task10();        
         cout << "\nДля продолжения нажмите любую клавишу\n";
         cin.get();
         system("cls");
