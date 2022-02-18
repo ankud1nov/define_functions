@@ -1,9 +1,11 @@
-﻿#include <iostream>
+﻿#include <format>
+#include <iostream>
 #include <string>
 #include <algorithm>
 #include <list>
 #include <cstdarg>
 #include <windows.h>
+
 #define SQR(x) x*x
 #define CUBE(X) (SQR(X)*(X))
 #define ABS(X) (((X) < 0)? -(X) : X)
@@ -19,11 +21,12 @@ constexpr int NOTFOUND = -1;;
 /// </summary>
 /// <param name="arr">Массив</param>
 /// <param name="SIZE">Длинна массива</param>
-void ShowArray(int arr[], const int SIZE) {
+template <typename T>
+void ShowArray(T arr[], const int SIZE, char delimetr = '\t') {
     for (int i = 0; i < SIZE; i++)
     {
         cout << arr[i];
-        cout << "\t";
+        cout << delimetr;
     }
     cout << endl;
 }
@@ -863,20 +866,128 @@ void Task8()
     }
 }
 
+int GetMaxLenghtInStrArray(string strs[], int count, int& postion)
+{
+    int maxLen = 0;
+    for (int i = 0; i < count; i++)
+    {
+        if (strs[i].length() > maxLen)
+        {
+            maxLen = strs[i].length();
+            postion = i;
+        }
+    }
+    return maxLen;
+}
+
+int GetMaxLenghtInStrArray(string strs[], int count)
+{
+    int a = 0;
+    return GetMaxLenghtInStrArray(strs, count, a);
+}
+
+void Task9()
+{
+    string surnames[5]{};
+    for (int i = 0; i < 5; i++)
+    {
+        surnames[i] = InitStrWithMsg(("Введите " + to_string(i+1) + " фамилию\n"));
+    }
+    cout << GetMaxLenghtInStrArray(surnames, 5);
+}
+
+void Task10()
+{
+    string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef";
+    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; }))+1;
+    string* strs = new string[spaceCount];
+    int position = 0;
+    for (size_t i = 0; i < spaceCount; i++)
+    {
+        strs[i] = str.substr(position, str.find_first_of(' ', position)-position);
+        position = (str.find(' ', position)) + 1;
+    }
+    ShowArray(strs, spaceCount, '\n');
+    int numberInArr = int();
+    int maxLen = GetMaxLenghtInStrArray(strs, spaceCount, numberInArr);
+    cout << "Максимальная длинна: " << maxLen << " на " << numberInArr+1 << " месте";
+}
+
+void Task11()
+{
+    string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef";
+    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; })) + 1;
+    string* strs = new string[spaceCount];
+    int position = 0;
+    for (size_t i = 0; i < spaceCount; i++)
+    {
+        strs[i] = str.substr(position, str.find_first_of(' ', position) - position);
+        position = (str.find(' ', position)) + 1;
+    }
+    ShowArray(strs, spaceCount, '\n');
+    int numberInArr = 0;
+    int mixLen = strs[0].length();
+    for (int i = 0; i < spaceCount; i++)
+    {
+        if (strs[i].length() < mixLen)
+        {
+            mixLen = strs[i].length();
+            numberInArr = i;
+        }
+    }
+    cout << "Минимальная длинна: " << mixLen << " на " << numberInArr + 1 << " месте";
+}
+
+void Task13()
+{
+    string str = "QWE asd aff цываыв а daf s wsf sd fwg ef.";
+    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; })) + 1;
+    string* strs = new string[spaceCount];
+    int position = 0;
+    for (size_t i = 0; i < spaceCount; i++)
+    {
+        strs[i] = str.substr(position, str.find_first_of(' ', position) - position);
+        position = (str.find(' ', position)) + 1;
+    }
+    str = "";
+    for (size_t i = 0; i < spaceCount; i++)
+    {
+        if (strs[i].length() > 2)
+        {
+            str += strs[i].substr(2, strs[i].length()-1) + " ";
+        }
+        else if(strs[i].length() <= 2 && strs[i].find('.') !=  MAXSIZE_T)
+        {
+            str += ".";
+        }
+    }
+    str.erase(str.length() - 3, 1);
+    cout << str;
+}
+
+void Task12()
+{
+    string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef.";
+    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; })) + 1;
+    cout << spaceCount;
+}
+
 #pragma endregion
+
 int main()
 {
     srand(time(nullptr));
     //setlocale(0, "ru");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+
     while (true)
     {
-        Task8();
-        Sleep(5000);
+        Task13();        
+        cout << "\nДля продолжения нажмите любую клавишу\n";
+        cin.get();
         system("cls");
     }
     
-    //cin.clear();
     return 0;
 }
