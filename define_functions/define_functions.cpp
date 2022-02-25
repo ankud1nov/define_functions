@@ -951,41 +951,124 @@ void Task11()
             numberInArr = i;
         }
     }
-    cout << "Минимальная длинна: " << mixLen << " на " << numberInArr + 1 << " месте";
-}
 
-void Task13()
-{
-    string str = "QWE asd aff цываыв а daf s wsf sd fwg ef.";
-    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; })) + 1;
-    string* strs = new string[spaceCount];
-    int position = 0;
-    for (size_t i = 0; i < spaceCount; i++)
-    {
-        strs[i] = str.substr(position, str.find_first_of(' ', position) - position);
-        position = (str.find(' ', position)) + 1;
-    }
-    str = "";
-    for (size_t i = 0; i < spaceCount; i++)
-    {
-        if (strs[i].length() > 2)
-        {
-            str += strs[i].substr(2, strs[i].length()-1) + " ";
-        }
-        else if(strs[i].length() <= 2 && strs[i].find('.') !=  MAXSIZE_T)
-        {
-            str += ".";
-        }
-    }
-    str.erase(str.length() - 3, 1);
-    cout << str;
+    cout << "Минимальная длинна: " << mixLen << " на " << numberInArr + 1 << " месте";
 }
 
 void Task12()
 {
     string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef.";
-    int spaceCount = (count_if(str.begin(), str.end(), [](char c) {return c == ' '; })) + 1;
+    int spaceCount = CountSybolsInStr(str, ' ') + 1;
     cout << spaceCount;
+}
+
+void Task13()
+{
+    string str = "QWE asd aff цываыв а daf s wsf sd fwg t.";
+
+    if (!str.find('.', 0))
+        return;
+
+    int spaceCount = CountSybolsInStr(str, ' ') + 1;
+
+    string* strs = SplitStr(str, ' ');
+
+    str = "";
+    for (size_t i = 0; i < spaceCount; i++)
+    {
+        if (strs[i].length() > 1)
+        {
+            str += strs[i].substr(1, strs[i].length()-1) + " ";
+        }
+    }
+    if (str[str.length()-3] == ' ')
+    {
+        str.erase(str.length() - 3, 1);
+    }    
+    cout << str;
+}
+
+int FindCountStrInStr(string str, string search)
+{
+    int strLen = str.length(), searchLen = search.length();
+    if (strLen < 1 || searchLen < 1 || strLen < searchLen ) return 0;
+
+    int count = 0;
+    int max = strLen - searchLen;
+
+    for (size_t i = 0; i < max; i++)
+        if (str.substr(i, searchLen) == search) count++;
+
+    return count;
+}
+
+int sentenceCountInStr(string str)
+{
+    int sentenceCount = 0;
+    char delimetrs[]{'!','?', '.'};
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        if ((str[i] == '!' && (str[i+1] == '!' || str[i + 1] == '.' || str[i + 1] == '?')) ||
+            (str[i] == '?' && (str[i + 1] == '!' || str[i + 1] == '.' || str[i + 1] == '?')) ||
+            (str[i] == '.' && (str[i + 1] == '!' || str[i + 1] == '.' || str[i + 1] == '?')))
+        {
+            str.erase(i, 1);
+            i--;
+        }
+    }
+    for (size_t i = 0; i < 3; i++)
+        sentenceCount += CountSybolsInStr(str, delimetrs[i]);
+    return sentenceCount;
+}
+
+void reverseEverySentence(string &str)
+{
+    int start = 0;
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        if ((str[i] == '!' && (str[i + 1] == ' ' || i + 1 == str.length())) ||
+            (str[i] == '?' && (str[i + 1] == ' ' || i + 1 == str.length())) ||
+            (str[i] == '.' && (str[i + 1] == ' ' || i + 1 == str.length())))
+        {
+            string substr = str.substr(start, (i+1)-start);
+            reverse(substr.begin(), substr.end());
+            str.replace(start, substr.length(), substr);
+            i++;
+            start = str[i] == ' ' ? i + 1 : i;
+        }
+    }
+}
+
+void Task14()
+{
+    string str = "QWE, QWE!.. aff.... цываыв, а daf. s wsf sd fwg t. QWE, QWE!.. aff.";
+
+    //Кол-во слов в строке
+    /*cout << FindCountStrInStr(str, "QWE") << endl;
+    cout << FindCountStrInStr(str, "da") << endl;
+    cout << FindCountStrInStr(str, "s") << endl;
+    cout << FindCountStrInStr(str, "") << endl;
+    cout << FindCountStrInStr(str, "QWE QWE aff цываыв а daf s wsf sd fwg t.QWE QWE aff цываыв а daf s wsf sd fwg t.") << endl;
+    */
+
+    //Кол-во предложений в строке
+    //cout << sentenceCountInStr(str);
+
+    //Кол-во точек и запятых в строке
+    //cout << (CountSybolsInStr(str, '.') + CountSybolsInStr(str, ','));
+
+    //Перевернуть весь текст
+    //reverse(str.begin(), str.end());
+    //cout << str;
+
+    //Переверните каждое предложение в тексте.
+    reverseEverySentence(str);
+    cout << str;
+}
+
+void Task15()
+{
+
 }
 
 #pragma endregion
@@ -996,10 +1079,10 @@ int main()
     //setlocale(0, "ru");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-
+    
     while (true)
     {
-        Task10();        
+        Task14();        
         cout << "\nДля продолжения нажмите любую клавишу\n";
         cin.get();
         system("cls");
