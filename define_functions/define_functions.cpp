@@ -790,6 +790,8 @@ void Task5()
     cout << "Другое: " << other << endl;
 }
 
+//Напишите программу, которая удаляет из строки, 
+//введенной пользователем, все пробелы и знаки препинания.
 void Task6()
 {
     string str = InitStrWithMsg("Введите строку\n");
@@ -901,10 +903,10 @@ int CountSybolsInStr(string str, char symbol)
 
 string* SplitStr(string str, char symbol)
 {
-    int spaceCount = CountSybolsInStr(str, ' ') + 1;
+    int spaceCount = CountSybolsInStr(str, symbol) + 1;
     string* strs = new string[spaceCount];
 
-    //Заполение массива слова разделенными пробелами
+    //Заполение массива слова разделенными символами
     int position = 0;
     for (size_t i = 0; i < spaceCount; i++)
     {
@@ -913,7 +915,7 @@ string* SplitStr(string str, char symbol)
     }
     return strs;
 }
-
+//Вывести самое длинное слово и его порядковый номер.
 void Task10()
 {
     //Строка
@@ -932,6 +934,7 @@ void Task10()
     cout << "Максимальная длинна: " << maxLen << " на " << numberInArr+1 << " месте";
 }
 
+//Вывести самое короткое слово и его порядковый номер.
 void Task11()
 {
     string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef";
@@ -955,6 +958,8 @@ void Task11()
     cout << "Минимальная длинна: " << mixLen << " на " << numberInArr + 1 << " месте";
 }
 
+
+//Подсчитать количество слов во введенном предложении.
 void Task12()
 {
     string str = "QWE asd aff цываыв а daf s wsf sd fwg sgsfgwsfsefwef.";
@@ -962,6 +967,7 @@ void Task12()
     cout << spaceCount;
 }
 
+//Удалить из строки первые буквы каждого слова.
 void Task13()
 {
     string str = "QWE asd aff цываыв а daf s wsf sd fwg t.";
@@ -988,7 +994,7 @@ void Task13()
     cout << str;
 }
 
-int FindCountStrInStr(string str, string search)
+int CountStrInStr(string str, string search)
 {
     int strLen = str.length(), searchLen = search.length();
     if (strLen < 1 || searchLen < 1 || strLen < searchLen ) return 0;
@@ -1044,12 +1050,12 @@ void Task14()
     string str = "QWE, QWE!.. aff.... цываыв, а daf. s wsf sd fwg t. QWE, QWE!.. aff.";
 
     //Кол-во слов в строке
-    /*cout << FindCountStrInStr(str, "QWE") << endl;
-    cout << FindCountStrInStr(str, "da") << endl;
-    cout << FindCountStrInStr(str, "s") << endl;
-    cout << FindCountStrInStr(str, "") << endl;
-    cout << FindCountStrInStr(str, "QWE QWE aff цываыв а daf s wsf sd fwg t.QWE QWE aff цываыв а daf s wsf sd fwg t.") << endl;
-    */
+    cout << CountStrInStr(str, "QWE") << endl;
+    cout << CountStrInStr(str, "da") << endl;
+    cout << CountStrInStr(str, "s") << endl;
+    cout << CountStrInStr(str, "") << endl;
+    cout << CountStrInStr(str, "QWE QWE aff цываыв а daf s wsf sd fwg t.QWE QWE aff цываыв а daf s wsf sd fwg t.") << endl;
+    
 
     //Кол-во предложений в строке
     //cout << sentenceCountInStr(str);
@@ -1068,7 +1074,25 @@ void Task14()
 
 void Task15()
 {
-
+    string str = "Can you can the can with can the with the with the with the with ?";
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        str[i] = toupper(str[i]);
+    }
+    int size = CountSybolsInStr(str, ' ')+1;
+    string* strArr = SplitStr(str, ' ');
+    string mostPopular = "";
+    int max = 0;
+    for (size_t i = 0; i < size; i++)
+    {
+        int countIn = CountStrInStr(str, strArr[i]);
+        if (countIn>max)
+        {
+            mostPopular = strArr[i];
+            max = countIn;
+        }
+    }
+    cout << mostPopular;
 }
 
 #pragma endregion
@@ -1082,7 +1106,7 @@ int main()
     
     while (true)
     {
-        Task14();        
+        Task15();        
         cout << "\nДля продолжения нажмите любую клавишу\n";
         cin.get();
         system("cls");
