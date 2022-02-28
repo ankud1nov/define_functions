@@ -1072,18 +1072,103 @@ void Task14()
     cout << str;
 }
 
+
+
 //Создание структуры с перегрузкой оператора '<<';
 template <typename T>
 struct KeyValuePair{
 public: 
-    T Key{};
-public: 
-    int Count{ 0 };
+    T Key{}; 
+    int Count{0};
+
+    void AddCount()
+    {
+        Count++;
+    }
 
     friend ostream& operator<<(ostream& os, const KeyValuePair& kvp)
     {
         os << "Ключ: " << kvp.Key << " Встречается - " << kvp.Count << " раз.";
         return os;
+    }
+};
+
+template <typename T>
+struct Dictioanry
+{
+private:
+    int pairCount;
+    int lastAddededNumber;
+    KeyValuePair<T>* Pairs;
+public:
+    void AddCount(int pairNumber)
+    {
+        Pairs[pairNumber].AddCount();
+    }
+
+    void AddPair(KeyValuePair<T> kvp)
+    {
+        if (lastAddededNumber == pairCount)
+        {
+            IncreaseSize();
+        }
+        Pairs[lastAddededNumber] = kvp;
+        lastAddededNumber++;
+    }
+
+    void AddPair(T key, int count)
+    {
+        if (lastAddededNumber == pairCount)
+        {
+            IncreaseSize();
+        }
+        Pairs[lastAddededNumber].Key = key;
+        Pairs[lastAddededNumber].Count = count;
+    }
+
+    int PairCount(int number)
+    {
+        return Pairs[i].Count;
+    }
+
+
+
+    KeyValuePair<T> GetPair(size_t number)
+    {
+        return Pairs[number];
+    }
+
+    int Size()
+    {
+        return lastAddededNumber;
+    }
+
+    Dictioanry()
+    {
+        pairCount = 10;
+        Pairs = new KeyValuePair<T>[pairCount];
+        lastAddededNumber = 0;
+    }
+
+    Dictioanry(int size)
+    {
+        pairCount = size;
+        Pairs = new KeyValuePair<T>[pairCount];
+        lastAddededNumber = 0;
+    }
+private:
+    void IncreaseSize()
+    {
+        KeyValuePair<T>* TempPairs = Pairs;//new KeyValuePair<T>[pairCount];
+        /*for (size_t i = 0; i < pairCount; i++)
+            TempPairs[i] = Pairs[i];*/
+
+        Pairs = new KeyValuePair<T>[pairCount * 2];
+
+        for (size_t i = 0; i < pairCount; i++)
+            Pairs[i] = TempPairs[i];
+
+        delete[] TempPairs;
     }
 };
 
@@ -1097,24 +1182,43 @@ void Task15()
     {
         str[i] = toupper(str[i]);
     }
-    KeyValuePair<string> dict[100];
+
+    Dictioanry<string> dict2{};
+    //KeyValuePair<string> dict[100];
     int size = CountSybolsInStr(str, ' ')+1;
     string* strArr = SplitStr(str, ' ');
     string mostPopular = "";
     int max = 0;
-    int searched = 0;
+    //int searched = 0;
 
-    dict[0].Key = strArr[0];
-    dict[0].Count = 1;
-    searched++;
+    dict2.AddPair(strArr[0], 1);
+    //dict[0].Key = strArr[0];
+    //dict[0].Count = 1;
+    //searched++;
     for (size_t i = 1; i < size; i++)
     {
+
         bool isSearched = false;
+        for (size_t j = 0; j < dict2.Size(); j++)
+        {
+            if (dict2.GetPair(j).Key == strArr[i])
+            {
+                dict2.AddCount(j);
+                isSearched = true;
+                break;
+            }
+        }
+
+        if (!isSearched)
+        {
+            dict2.AddPair(strArr[i], 1);
+        }
+        /*bool isSearched = false;
         for (size_t j = 0; j < searched; j++)
         {
             if (dict[j].Key == strArr[i])
             {
-                dict[j].Count++;
+                dict[j].AddCount();
                 isSearched = true;
                 break;
             }
@@ -1125,7 +1229,7 @@ void Task15()
             dict[searched].Key = strArr[i];
             dict[searched].Count = 1;
             searched++;
-        }
+        }*/
 
         /*int countIn = CountStrInStr(str, strArr[i]);
         if (countIn > max)
@@ -1134,7 +1238,16 @@ void Task15()
             max = countIn;
         }*/
     }
-    cout << dict[0];
+
+    for (size_t i = 0; i < dict2.Size(); i++)
+    {
+        if (int a = dict2.PairCount(i) > max)
+        {
+            mostPopular = strArr[i];
+            max = a;
+        }
+    }
+    cout << mostPopular;
 }
 
 #pragma endregion
