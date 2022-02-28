@@ -5,7 +5,7 @@
 #include <list>
 #include <cstdarg>
 #include <windows.h>
-
+#include <map>
 #define SQR(x) x*x
 #define CUBE(X) (SQR(X)*(X))
 #define ABS(X) (((X) < 0)? -(X) : X)
@@ -1072,27 +1072,69 @@ void Task14()
     cout << str;
 }
 
+//Создание структуры с перегрузкой оператора '<<';
+template <typename T>
+struct KeyValuePair{
+public: 
+    T Key{};
+public: 
+    int Count{ 0 };
+
+    friend ostream& operator<<(ostream& os, const KeyValuePair& kvp)
+    {
+        os << "Ключ: " << kvp.Key << " Встречается - " << kvp.Count << " раз.";
+        return os;
+    }
+};
+
+//Нужно найти самое часто встречающееся слово в тексте.
+//Текст должен содержать не более 1000 символов.
+//Вывод должен быть в UPPER CASE(верхний регистр).Написать функцию void mostRecent(char* text, char* word).
 void Task15()
 {
-    string str = "Can you can the can with can the with the with the with the with ?";
+    string str = "Can you can the can with can the with the with the with the with?";
     for (size_t i = 0; i < str.length(); i++)
     {
         str[i] = toupper(str[i]);
     }
+    KeyValuePair<string> dict[100];
     int size = CountSybolsInStr(str, ' ')+1;
     string* strArr = SplitStr(str, ' ');
     string mostPopular = "";
     int max = 0;
-    for (size_t i = 0; i < size; i++)
+    int searched = 0;
+
+    dict[0].Key = strArr[0];
+    dict[0].Count = 1;
+    searched++;
+    for (size_t i = 1; i < size; i++)
     {
-        int countIn = CountStrInStr(str, strArr[i]);
-        if (countIn>max)
+        bool isSearched = false;
+        for (size_t j = 0; j < searched; j++)
+        {
+            if (dict[j].Key == strArr[i])
+            {
+                dict[j].Count++;
+                isSearched = true;
+                break;
+            }
+        }
+
+        if (!isSearched)
+        {
+            dict[searched].Key = strArr[i];
+            dict[searched].Count = 1;
+            searched++;
+        }
+
+        /*int countIn = CountStrInStr(str, strArr[i]);
+        if (countIn > max)
         {
             mostPopular = strArr[i];
             max = countIn;
-        }
+        }*/
     }
-    cout << mostPopular;
+    cout << dict[0];
 }
 
 #pragma endregion
