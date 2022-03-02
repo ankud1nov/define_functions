@@ -50,10 +50,11 @@ void InitArray(T* mass, int lenght, int max, int min) {
 //template <typename T>
 void Init2DArray(int** mass, int row, int columns, int max, int min)
 {
-    for (int i = 0; i < 10; i++)
+    mass = new int* [row];
+    for (int i = 0; i < row; i++)
     {
-        mass[i] = new int[columns];
-        InitArray(mass[i], columns, max, min);
+        mass[i] = new int[i+1];
+        InitArray(mass[i], i + 1, max, min);
     }
 }
 
